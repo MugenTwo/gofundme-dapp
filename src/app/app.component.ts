@@ -20,11 +20,9 @@ export class AppComponent implements OnInit {
     console.log(this.web3)
   }
 
-  connect() {
-    this.authService.connect();
-  }
-
   ngOnInit(): void {
+    this.authService.connect();
+
     this.authService.loginUser.subscribe((res: boolean) => { 
       this.loginUser = res;
       (!this.loginUser) ? this.addressUserView = false : this.addressUserView = true;
