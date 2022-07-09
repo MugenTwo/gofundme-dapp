@@ -1,0 +1,4 @@
+<button *ngIf="!loginUser" (click)="connect()">Connect</button>
+<h1 *ngIf="addressUserView">{{ addressUser }}</h1>
+
+<router-outlet></router-outlet>
