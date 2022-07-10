@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import Web3 from 'web3';
 import Swal from 'sweetalert2';
+import { environment } from 'src/environments/environment.development';
 
 declare let window: any;
 
@@ -20,7 +21,7 @@ export class AuthService {
 
   constructor() {
     if (typeof window.ethereum !== 'undefined') {
-      this.web3 = new Web3(window.ethereum);
+      this.web3 = new Web3(new Web3.providers.HttpProvider(environment.serverUrl));
     } else {
       Swal.fire({
         icon: 'error',
