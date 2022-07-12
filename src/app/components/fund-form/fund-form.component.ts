@@ -15,9 +15,16 @@ export class FundFormComponent implements OnInit {
   addressUserView: boolean = false;
 
   web3: any;
+  goFundMe: any;
 
   ownerAddress: string = "";
   getOwnerAddress = new BehaviorSubject<string>('');
+
+  fundValue: Number = 0;
+  fund = new BehaviorSubject<string>('');
+
+  fundedAmount: Number = 0;
+  getAmountFunded = new BehaviorSubject<string>('');
 
   constructor(private cdr: ChangeDetectorRef, private authService: AuthService) {
     this.authService = authService;
@@ -33,23 +40,53 @@ export class FundFormComponent implements OnInit {
 
     this.authService.addressUser.subscribe((res: string) => {
       this.addressUser = res;
-      if(this.addressUser){
-        this.getOwner();
+      if (this.addressUser) {
+        this.goFundMe = new this.web3.eth.Contract(environment.contract.abi, environment.contract.address);
+        this.callGetOwner();
+        this.callGetAmountFunded();
       }
       this.cdr.detectChanges();
     });
 
-    this.getOwnerAddress.subscribe((res: any)=>{
+    this.getOwnerAddress.subscribe((res: any) => {
       this.ownerAddress = res;
+      this.cdr.detectChanges();
+    });
+
+    this.fund.subscribe(_=> {
+      this.callGetAmountFunded();
+      this.cdr.detectChanges();
+    });
+
+    this.getAmountFunded.subscribe((res: any) => {
+      this.fundedAmount = this.web3.utils.fromWei(res, "ether");
       this.cdr.detectChanges();
     });
   }
 
-  async getOwner(){
-    var goFundMe = new this.web3.eth.Contract(environment.contract.abi, environment.contract.address);
-    const ownerAddress = await goFundMe.methods.getOwner()
+  public fundContract() {
+    this.callFund();
+  }
+
+  async callGetOwner() {
+    const ownerAddress = await this.goFundMe.methods.getOwner()
       .call({ from: this.addressUser });
     this.getOwnerAddress.next(ownerAddress);
+  }
+
+  async callFund() {
+    const fund = await this.goFundMe.methods.fund()
+      .send({from: this.addressUser, value: this.web3.utils.toWei(String(this.fundValue), "ether") });
+    this.fund.next(fund);
+  }
+
+  async callGetAmountFunded() {
+    if(this.addressUser) {
+      var goFundMe = new this.web3.eth.Contract(environment.contract.abi, environment.contract.address);
+      const fund = await goFundMe.methods.getAddressToAmountFunded(this.addressUser)
+        .call();
+      this.getAmountFunded.next(fund);
+    }
   }
 
 }

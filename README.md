@@ -9,6 +9,10 @@ Remember to import account (through private key) from the http://localhost:8545/
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
+## How to try?
+
+Go to http://localhost:4200/fund-form. Please do not link real ethereum on the testnet.
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
