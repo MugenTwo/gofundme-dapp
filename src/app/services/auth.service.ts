@@ -17,7 +17,6 @@ export class AuthService {
 
   chainIds: string[] = ['0x0'];
   addressUser: any = new BehaviorSubject<string>('');
-  loginUser: any = new BehaviorSubject<boolean>(false);
 
   constructor() {
     if (typeof window.ethereum !== 'undefined') {
@@ -39,20 +38,9 @@ export class AuthService {
     const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
     this.addressUser.next(accounts[0]);
-    this.authBackend();
-
     window.ethereum.on('accountsChanged', (accounts: string[]) => {
       this.addressUser.next(accounts[0]);
-      this.authBackend();
     });
-  }
-
-  async authBackend() {
-    this.loginUser.next(true);
-  }
-
-  logout() {
-    this.loginUser.next(false);
   }
 
 }

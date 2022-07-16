@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { environment } from 'src/environments/environment.development';
+import { GoFundMeService } from 'src/app/services/go-fund-me.service';
 
 @Component({
   selector: 'app-fund-form',
@@ -10,83 +9,39 @@ import { environment } from 'src/environments/environment.development';
 })
 export class FundFormComponent implements OnInit {
 
-  loginUser: boolean = false;
-  addressUser: string = '';
-  addressUserView: boolean = false;
-
   web3: any;
-  goFundMe: any;
 
   ownerAddress: string = "";
-  getOwnerAddress = new BehaviorSubject<string>('');
-
   fundValue: Number = 0;
-  fund = new BehaviorSubject<string>('');
-
   fundedAmount: Number = 0;
-  getAmountFunded = new BehaviorSubject<string>('');
 
-  constructor(private cdr: ChangeDetectorRef, private authService: AuthService) {
+  constructor(private cdr: ChangeDetectorRef,
+              private authService: AuthService,
+              private goFundMeService: GoFundMeService) {
     this.authService = authService;
     this.web3 = this.authService.web3Instance;
+    this.goFundMeService = goFundMeService;
   }
 
   ngOnInit(): void {
-    this.authService.loginUser.subscribe((res: boolean) => {
-      this.loginUser = res;
-      (!this.loginUser) ? this.addressUserView = false : this.addressUserView = true;
-      this.cdr.detectChanges();
-    });
-
-    this.authService.addressUser.subscribe((res: string) => {
-      this.addressUser = res;
-      if (this.addressUser) {
-        this.goFundMe = new this.web3.eth.Contract(environment.contract.abi, environment.contract.address);
-        this.callGetOwner();
-        this.callGetAmountFunded();
-      }
-      this.cdr.detectChanges();
-    });
-
-    this.getOwnerAddress.subscribe((res: any) => {
+    this.goFundMeService.getOwnerAddress.subscribe((res: any) => {
       this.ownerAddress = res;
       this.cdr.detectChanges();
     });
 
-    this.fund.subscribe(_=> {
-      this.callGetAmountFunded();
+    this.goFundMeService.fund.subscribe(_ => {
+      this.goFundMeService.callGetAmountFunded();
       this.cdr.detectChanges();
     });
 
-    this.getAmountFunded.subscribe((res: any) => {
+    this.goFundMeService.getAmountFunded.subscribe((res: any) => {
       this.fundedAmount = this.web3.utils.fromWei(res, "ether");
       this.cdr.detectChanges();
     });
   }
 
   public fundContract() {
-    this.callFund();
-  }
-
-  async callGetOwner() {
-    const ownerAddress = await this.goFundMe.methods.getOwner()
-      .call({ from: this.addressUser });
-    this.getOwnerAddress.next(ownerAddress);
-  }
-
-  async callFund() {
-    const fund = await this.goFundMe.methods.fund()
-      .send({from: this.addressUser, value: this.web3.utils.toWei(String(this.fundValue), "ether") });
-    this.fund.next(fund);
-  }
-
-  async callGetAmountFunded() {
-    if(this.addressUser) {
-      var goFundMe = new this.web3.eth.Contract(environment.contract.abi, environment.contract.address);
-      const fund = await goFundMe.methods.getAddressToAmountFunded(this.addressUser)
-        .call();
-      this.getAmountFunded.next(fund);
-    }
+    this.goFundMeService.callFund(this.fundValue);
   }
 
 }
