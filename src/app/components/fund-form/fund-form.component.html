@@ -1,11 +1,35 @@
-<!-- <h1 *ngIf="addressUserView">The user address is {{ addressUser }}</h1> -->
+<div class="flex justify-center">
+    <div>
+        <mat-card class="fund-card ">
+            <mat-card-header>
+                <div mat-card-avatar class="fund-header-image"></div>
+                <mat-card-title>Fund {{ ownerAddress }}</mat-card-title>
+            </mat-card-header>
 
-<p>You are funding {{ ownerAddress }}</p>
 
-<input type="number" [(ngModel)]="fundValue">
-<button (click)="fundContract()">Fund</button>
+            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                alt="Photo of a Shiba Inu">
 
-<p>You are going to fund with: {{ fundValue }} Ether</p>
 
-<p style="font-size: 20px;">You have funded a total of: {{ fundedAmount }} Ether</p>
-<p><b>Thank you so much!</b></p>
+            <mat-card-content class="fund-card-content">
+                <mat-form-field appearance="fill">
+                    <mat-label>Fund amount</mat-label>
+                    <input matInput placeholder="Placeholder" type="number" [(ngModel)]="fundValue">
+                </mat-form-field>
+
+                <p>You are going to fund with: {{ fundValue }} Ether</p>
+                <p><b>Thank you so much!</b></p>
+            </mat-card-content>
+
+
+            <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="fundContract()">Fund</button>
+            </mat-card-actions>
+
+
+            <mat-card-footer>
+                <p style="font-size: 13px;">You have funded a total of: {{ fundedAmount }} Ether</p>
+            </mat-card-footer>
+        </mat-card>
+    </div>
+</div>

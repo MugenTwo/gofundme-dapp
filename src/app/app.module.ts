@@ -9,6 +9,13 @@ import { AuthService } from './services/auth.service';
 import { AppComponent } from './app.component';
 import { FundFormComponent } from './components/fund-form/fund-form.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +24,14 @@ import { FundFormComponent } from './components/fund-form/fund-form.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
