@@ -1,0 +1,24 @@
+<div class="flex justify-center">
+    <div>
+        <mat-card class="withdraw-card ">
+            <mat-card-header>
+                <div mat-card-avatar class="withdraw-header-image"></div>
+                <mat-card-title>Owner {{ ownerAddress }}</mat-card-title>
+            </mat-card-header>
+
+
+            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                alt="Photo of a Shiba Inu">
+
+
+            <mat-card-content class="withdraw-card-content">
+                <p><b>Make your dreams come true</b></p>
+            </mat-card-content>
+
+
+            <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="withdraw()">Withdraw</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

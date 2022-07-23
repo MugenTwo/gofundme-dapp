@@ -8,6 +8,7 @@ import { AuthService } from './services/auth.service';
 
 import { AppComponent } from './app.component';
 import { FundFormComponent } from './components/fund-form/fund-form.component';
+import { WithdrawPageComponent } from './components/withdraw-page/withdraw-page.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
@@ -19,7 +20,8 @@ import { MatButtonModule } from '@angular/material/button';
 @NgModule({
   declarations: [
     AppComponent,
-    FundFormComponent
+    FundFormComponent,
+    WithdrawPageComponent
   ],
   imports: [
     BrowserModule,

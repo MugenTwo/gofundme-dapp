@@ -15,6 +15,7 @@ export class GoFundMeService {
   getOwnerAddress = new BehaviorSubject<string>('');
   fund = new BehaviorSubject<string>('');
   getAmountFunded = new BehaviorSubject<string>('');
+  withdraw = new BehaviorSubject<string>('');
 
   constructor(private authService: AuthService) {
     this.authService.addressUser.subscribe((res: string) => {
@@ -45,6 +46,14 @@ export class GoFundMeService {
       const fund = await this.goFundMe.methods.getAddressToAmountFunded(this.addressUser)
         .call();
       this.getAmountFunded.next(fund);
+    }
+  }
+
+  async callWithdraw() {
+    if (this.addressUser) {
+      const fund = await this.goFundMe.methods.withdraw()
+        .send({ from: this.addressUser });
+      this.withdraw.next(fund);
     }
   }
 

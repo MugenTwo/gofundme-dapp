@@ -1,0 +1,14 @@
+.withdraw-card {
+    padding: 2%;
+    margin: 2%;
+    max-width: 600px;
+}
+
+.withdraw-card-content {
+    margin: 2%;
+}
+
+.withdraw-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba2.jpg');
+    background-size: cover;
+}
